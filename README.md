@@ -14,11 +14,6 @@ POST /auto
 		marca 		string
 		anio		integer
 		color 		string
-* Image
-POST /auto/{patente}/image
-	Parameters:
-		patente		string
-		image		file
 * Read
 GET /auto
 	Parameters:
@@ -31,50 +26,48 @@ PUT /auto/{patente}
 		marca 		string
 		anio		integer
 		color 		string
+		estado 		string 
 * Delete
 DELETE /auto/{patente}
 	Parameters:
 		patente		string	
-* List (en venta, vendidos)
+* List (todos los autos en venta)
 GET /auto
-	Parameters:
-		patente		[string]
 
 Usuarios
 * Create
-POST /user
+POST /usuario
 	Parameters:
 		user		string
 		nombre		string
 		apellido	string
-		edad 		integer
 		pass		string
 * Read
-GET /user/{user}
+GET /usuario/{user}
 	Parameters:
 		user		string
 * Delete
-DELETE /user/{user}
+DELETE /usuario/{user}
 	Parameters:
 		pass		string
 * Update
-PUT /user/{user}
+PUT /usuario/{user}
 	Parameters:
 		user		string
 		nombre		string
 		apellido	string
-		edad 		integer
 		pass		string
 
 Subasta
 * Create
 POST /subasta
 	Parameters:
-		patente		string
-		fecha		date
-		valor		integer
+		patente		 string
+		fecha_inicio date
+		fecha_fin	 date
+		valor		 integer
 * Update
-PUT /subasta/{id}
+PUT /subasta/{patente}
 	Parameters:
 		user		string
 		oferta		integer
@@ -83,6 +76,6 @@ GET /subasta/{marca}
 	Parameters:
 		marca		string
 * Read
-GET /subasta/{id}
+GET /subasta/{patente}
 	Parameters:
-		id			integer
+		patente		integer
