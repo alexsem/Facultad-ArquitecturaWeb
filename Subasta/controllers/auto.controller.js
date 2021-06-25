@@ -8,11 +8,11 @@ const autoGet = async (req = request, res = response) => {
         var auto = mongo.database.collection("Auto").find(query);
         let list = [];
         await auto.forEach(element => list.push(element)); 
+        res.status(200); 
         res.json({list});
-        res.status(200).end; 
     }
     catch(ex){
-        res.status(500).end;
+        res.status(500);
         res.json("Error al intentar encontrar los autos.");
     }
 }
@@ -24,16 +24,16 @@ const autoGetByPatente = async (req = request, res = response) => {
         const query = { patente: `${patente}` };
         var auto = await mongo.database.collection("Auto").findOne(query); 
         if (auto){
-            res.status(200).end;
+            res.status(200);
             res.json(auto);
         }
         else {
-            res.status(204).end;
+            res.status(204);
             res.json("No existe el auto solicitado.");
         }
     }
     catch(ex){
-        res.status(500).end;
+        res.status(500);
         res.json("Error al intentar encontrar el auto indicado.");
     }
 };
@@ -43,12 +43,12 @@ const autoPost = async (req, res = response) => {
     try{
         const auto = req.body;
         mongo.database.collection("Auto").insertOne(auto);
-        res.status(201).end;
+        res.status(201);
         res.json();
         console.log("Se inserto el auto correctamente!");
     }
     catch(ex){
-        res.status(500).end;
+        res.status(500);
         res.json("Error al insertar auto");
     }
 };
@@ -62,10 +62,10 @@ const autoPut = async (req, res = response) => {
         mongo.database.collection("Auto").updateOne(query, updateDocument);
 
         console.log("Se actualizo el auto correctamente!")
-        res.status(200).end;
+        res.status(200);
         res.json();
     } catch(ex) {
-        res.status(500).end;
+        res.status(500);
         res.json("Error al actualizar auto");
     }
 };
@@ -79,15 +79,15 @@ const autoDelete = async (req, res = response) => {
 
         if (deleteResult.deletedCount){
             console.log("El auto fue eliminado");
-            res.status(200).end;
+            res.status(200);
             res.json();    
         } else {
             console.log("No se encontro el auto.");
-            res.status(204).end;
+            res.status(204);
             res.json("No se encontro el auto.");
         }
     } catch(ex) {
-        res.status(500).end;
+        res.status(500);
         res.json("Error al eliminar auto");
     }
 };

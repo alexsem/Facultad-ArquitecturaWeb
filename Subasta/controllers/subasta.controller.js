@@ -9,15 +9,16 @@ const subastaGet = async (req, res) => {
         const query = { patente: `${patente}` };
         var subasta = await mongo.database.collection("Subasta").findOne(query); 
         if (subasta) {
-            res.status(200).end;
+            res.status(200);
             res.json(subasta);
         }
         else {
-            res.status(204).end;
+            res.status(204);
+            res.json();
         }
     }
     catch(ex) {
-        res.status(500).end;
+        res.status(500);
         res.json("Error al intentar encontrar la subasta indicada.");
     }
 }
@@ -55,17 +56,17 @@ const subastaPost = async (req, res = response) => {
                 "valor_inicial": valor_inicial
             }
         );
-        res.status(201).end;
+        res.status(201);
         res.json();
         console.log("Se inserto la subasta correctamente!");
     }
     catch(ex) {
+        res.status(500);
         if(ex) {
             res.json(ex);
         } else {
             res.json("Error al insertar la subasta. La subasta debe tener una patente, fecha_incio, fecha_fin y valor_incial.");
         }
-        res.status(500).end;
     }
 };
 
@@ -96,16 +97,16 @@ const subastaPut = async (req, res = response) => {
                 collection.updateOne(query, updateDocument);
             }
         }
-        res.status(200).end;
+        res.status(200);
         res.json("Se actualizo la subasta correctamente!");
     }
     catch (ex){
+        res.status(500);
         if(typeof ex === 'string' ) {
             res.json(ex);
         } else {
             res.json("Error al hacer una oferta.");
-        }
-        res.status(500).end;       
+        }       
     }
 }
 
