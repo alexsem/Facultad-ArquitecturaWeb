@@ -1,5 +1,5 @@
 # Facultad-ArquitecturaWeb
-# Alumno: Alejandro Semprini
+## Alumno: Alejandro Semprini
 
 Compra-Venta de Autos
 
@@ -62,10 +62,10 @@ Subasta
 * Create
 POST /subasta
 	Parameters:
-		patente		 string
-		fecha_inicio date
-		fecha_fin	 date
-		valor		 integer
+		patente		  string
+		fecha_inicio  date
+		fecha_fin	  date
+		valor_inicial integer
 * Update
 PUT /subasta/{patente}
 	Parameters:

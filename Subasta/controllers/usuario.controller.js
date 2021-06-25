@@ -1,79 +1,78 @@
 const { response, request } = require('express');
 const mongo = require('../models/database');
-const collection = mongo.database.collection("Usuario");
 
 // buscar usuario
 const usuarioGet = async (req = request, res = response) => {
     try{
-        const { patente } = req.params;
-        const query = { patente: `${patente}` };
-        var auto = await collection.findOne(query); 
-        if (auto){
+        const { user } = req.params;
+        const query = { user: `${user}` };
+        var usuario = await mongo.database.collection("Usuario").findOne(query); 
+        if (usuario){
             res.status(200).end;
-            res.json(auto);
+            res.json(usuario);
         }
         else {
+            res.json("No existe el usuario solicitado.");
             res.status(204).end;
-            res.json("No existe el auto solicitado.");
         }
     }
     catch(ex){
         res.status(500).end;
-        res.json("Error al intentar encontrar el auto indicado.");
+        res.json("Error al intentar encontrar el usuario indicado.");
     }
 };
 
 // agregar usuario
 const usuarioPost = async (req, res = response) => {
     try{
-        const auto = req.body;
-        collection.insertOne(auto);
-        res.status(200).end;
+        const usuario = req.body;
+        console.log(usuario);
+        mongo.database.collection("Usuario").insertOne(usuario);
+        res.status(201).end;
         res.json();
-        console.log("Se inserto el auto correctamente!");
+        console.log("Se inserto el usuario correctamente!");
     }
     catch(ex){
         res.status(500).end;
-        res.json("Error al insertar auto");
+        res.json("Error al insertar usuario");
     }
 };
 
 // actualizar usuario
 const usuarioPut = async (req, res = response) => {
     try {
-        const query = { patente: `${req.params.patente}` };
+        const query = { user: `${req.params.user}` };
         const updateDocument = { $set: req.body };
 
-        collection.updateOne(query, updateDocument);
+        mongo.database.collection("Usuario").updateOne(query, updateDocument);
 
-        console.log("Se actualizo el auto correctamente!")
+        res.json();("Se actualizo el usuario correctamente!")
         res.status(200).end;
-        res.json();
+
     } catch(ex) {
         res.status(500).end;
-        res.json("Error al actualizar auto");
+        res.json("Error al actualizar usuario");
     }
 };
 
 // eliminar usuario
 const usuarioDelete = async (req, res = response) => {
     try{
-        const query = { patente: `${req.params.patente}` };
+        const query = { user: `${req.params.user}` };
 
-        const deleteResult = await collection.deleteOne(query);
+        const deleteResult = await mongo.database.collection("Usuario").deleteOne(query);
 
         if (deleteResult.deletedCount){
-            console.log("El auto fue eliminado");
+            console.log("El usuario fue eliminado");
             res.status(200).end;
             res.json();    
         } else {
-            console.log("No se encontro el auto.");
+            res.json("No se encontro el usuario.");
             res.status(204).end;
-            res.json("No se encontro el auto.");
         }
     } catch(ex) {
         res.status(500).end;
-        res.json("Error al eliminar auto");
+        res.json("Error al eliminar usuario");
     }
 };
 

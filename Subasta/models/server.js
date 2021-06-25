@@ -6,7 +6,8 @@ class Server {
         this.app  = express();
         this.port = process.env.PORT;
         this.autoPath = '/auto';
-        this.usuarioPath = 'usuario';
+        this.usuarioPath = '/usuario';
+        this.subastaPath = '/subasta'
 
         // Middlewares
         this.middlewares();
@@ -32,6 +33,8 @@ class Server {
 
     routes() {
         this.app.use( this.autoPath, require('../routes/auto.routes'));
+        this.app.use( this.usuarioPath, require('../routes/usuario.routes'));
+        this.app.use( this.subastaPath, require('../routes/subasta.routes'));
     }
 
     listen() {

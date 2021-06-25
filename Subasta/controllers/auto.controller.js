@@ -1,12 +1,11 @@
 const { response, request } = require('express');
 const mongo = require('../models/database');
-const collection = mongo.database.collection("Auto");
 
 // todos los autos en venta
 const autoGet = async (req = request, res = response) => {
     try{
         const query = { $or: [ {estado: null }, { estado: "en venta" } ]};
-        var auto = collection.find(query);
+        var auto = mongo.database.collection("Auto").find(query);
         let list = [];
         await auto.forEach(element => list.push(element)); 
         res.json({list});
@@ -23,7 +22,7 @@ const autoGetByPatente = async (req = request, res = response) => {
     try{
         const { patente } = req.params;
         const query = { patente: `${patente}` };
-        var auto = await collection.findOne(query); 
+        var auto = await mongo.database.collection("Auto").findOne(query); 
         if (auto){
             res.status(200).end;
             res.json(auto);
@@ -43,8 +42,8 @@ const autoGetByPatente = async (req = request, res = response) => {
 const autoPost = async (req, res = response) => {
     try{
         const auto = req.body;
-        collection.insertOne(auto);
-        res.status(200).end;
+        mongo.database.collection("Auto").insertOne(auto);
+        res.status(201).end;
         res.json();
         console.log("Se inserto el auto correctamente!");
     }
@@ -60,7 +59,7 @@ const autoPut = async (req, res = response) => {
         const query = { patente: `${req.params.patente}` };
         const updateDocument = { $set: req.body };
 
-        collection.updateOne(query, updateDocument);
+        mongo.database.collection("Auto").updateOne(query, updateDocument);
 
         console.log("Se actualizo el auto correctamente!")
         res.status(200).end;
@@ -76,7 +75,7 @@ const autoDelete = async (req, res = response) => {
     try{
         const query = { patente: `${req.params.patente}` };
 
-        const deleteResult = await collection.deleteOne(query);
+        const deleteResult = await mongo.database.collection("Auto").deleteOne(query);
 
         if (deleteResult.deletedCount){
             console.log("El auto fue eliminado");

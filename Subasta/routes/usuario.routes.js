@@ -4,9 +4,9 @@ const usuarioController = require('../controllers/usuario.controller');
 
 const router = Router();
 
-router.get('/:patente', usuarioController.usuarioGet );
+router.get('/:user', usuarioController.usuarioGet );
 router.post('/', usuarioController.usuarioPost );
-router.put('/:patente', usuarioController.usuarioPut );
-router.delete('/:patente', usuarioController.usuarioDelete );
+router.put('/:user', usuarioController.usuarioPut );
+router.delete('/:user', usuarioController.usuarioDelete );
 
 module.exports = router;
