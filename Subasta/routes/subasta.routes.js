@@ -6,7 +6,6 @@ const router = Router();
 
 router.get('/:patente', subastaController.subastaGet );
 router.post('/', subastaController.subastaPost );
-//router.put('/:patente', subastaController.usuarioPut );
-//router.delete('/:patente', subastaController.usuarioDelete );
+router.put('/:patente', subastaController.subastaPut );
 
 module.exports = router;

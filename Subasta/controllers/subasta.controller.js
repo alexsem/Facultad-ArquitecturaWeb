@@ -26,12 +26,10 @@ const subastaGet = async (req, res) => {
 const subastaPost = async (req, res = response) => {
     try {
         const { patente, fecha_inicio, fecha_fin, valor_inicial } = req.body;
-        console.log(patente, fecha_inicio, fecha_fin, valor_inicial);
 
         collection = mongo.database.collection("Subasta");
 
         subastaExiste = await collection.findOne({ patente: patente});
-        console.log(subastaExiste);
 
         if(subastaExiste){
             throw (`Ya existe una subasta para el auto con patente ${patente}`);
@@ -71,9 +69,48 @@ const subastaPost = async (req, res = response) => {
     }
 };
 
+// ofertar en la subasta
+const subastaPut = async (req, res = response) => {
+    
+    const { patente } = req.params;
+    const { user, oferta } = req.body;
+
+    collection = mongo.database.collection("Subasta");
+    
+    try {
+        userExiste = await mongo.database.collection("Usuario").findOne({ user:  `${user}` });
+        if(!userExiste){
+            throw (`El usuario ${user} no esta registrado y no puede ofertar`);
+        }
+
+        subastaExiste = await collection.findOne({ patente:  `${patente}` });
+        if(!subastaExiste){
+            throw (`No existe una subasta para el auto con la patente ${patente}`);
+        } else {
+            if(subastaExiste.mejor_oferta && subastaExiste.mejor_oferta.oferta > oferta){
+                throw(`La oferta hecha es menor a la oferta existente`);
+            }
+            else {
+                const query = { patente: `${patente}` };
+                const updateDocument = { $set: { mejor_oferta: {user: `${user}`,  oferta: `${oferta}` } } };
+                collection.updateOne(query, updateDocument);
+            }
+        }
+        res.status(200).end;
+        res.json("Se actualizo la subasta correctamente!");
+    }
+    catch (ex){
+        if(typeof ex === 'string' ) {
+            res.json(ex);
+        } else {
+            res.json("Error al hacer una oferta.");
+        }
+        res.status(500).end;       
+    }
+}
+
 module.exports = {
     subastaGet,
     subastaPost,
-    //subastaPut,
-    //subastaDelete
+    subastaPut
 }
